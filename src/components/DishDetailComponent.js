@@ -3,6 +3,7 @@ import { Card, CardTitle, CardText, CardImg, CardBody } from 'reactstrap';
 
 
 class DishDetail extends Component{
+
 	renderDish(dish){
 		if (dish!=null)
 			return(
@@ -56,9 +57,11 @@ class DishDetail extends Component{
 
 	render(){
 		return(
-			<div className="row">
-					{this.renderDish(this.props.selectedDish)}
-					{this.renderComments(this.props.selectedDish)}
+			<div className="container">
+				<div className="row">
+						{this.renderDish(this.props.selectedDish)}
+						{this.renderComments(this.props.selectedDish)}
+				</div>
 			</div>
 			);
 	}
