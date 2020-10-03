@@ -178,7 +178,7 @@ class ContactUs extends Component{
                             </FormGroup>
                             <FormGroup row>
                                 <Col md={{size:10, offset:2}}>
-                                    <Button type="Submit" color="primary">Send</Button>
+                                    <Button type="submit" value="submit" color="primary">Send</Button>
                                 </Col>
                             </FormGroup>
                         </Form> 
