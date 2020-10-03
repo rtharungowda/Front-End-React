@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, BreadcrumbItem, Form, FormGroup, Label, Input, Col, Button} from 'reactstrap';
+import {Breadcrumb, BreadcrumbItem, Form, FormGroup, FormFeedback, Label, Input, Col, Button} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
 class ContactUs extends Component{
@@ -14,11 +14,18 @@ class ContactUs extends Component{
             telno: '',
             agree: false,
             contactType: 'Through Email',
-            message: ''
+            message: '',
+            touched: {
+                firstname: '',
+                lastname: '',
+                email: '',
+                telno: ''
+            }
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     } 
 
     handleInputChange(event){
@@ -38,7 +45,44 @@ class ContactUs extends Component{
         event.preventDefault();
     }
 
+    handleBlur = (field)=> (event) =>{
+        this.setState({
+                    touched: {...this.state.touched, [field]:true}
+                });
+    }
+
+    validate(firstname, lastname, email, telno){
+        const errors = {
+            firstname: '',
+            lastname: '',
+            telno: '',
+            email: ''
+        }
+
+        if (this.state.touched.firstname && firstname.length<3){
+            errors.firstname = 'Firstname must be atleast 3 characters; try adding spaces';
+        }
+
+        if (this.state.touched.lastname && lastname.length<3){
+            errors.lastname = 'Lastname must be atleast 3 characters; try adding spaces';
+        }
+
+        const reg = /^\d+$/;
+        if (this.state.touched.telno && !reg.test(telno) && telno.length !== 10){
+            errors.telno = 'Phone number must contain only digits and be 10 digits in length';
+        }
+
+        if (this.state.touched.email && email.split('').filter((x) => x === '@').length !== 1 ){
+            errors.email = 'Type in a valid email';
+        }
+
+        return errors;
+    }
+
     render(){
+
+        const errors = this.validate(this.state.firstname, this.state.lastname, this.state.email, this.state.telno);
+
         return(
             <div className="container">
                 <div className="row">
@@ -86,31 +130,35 @@ class ContactUs extends Component{
                             <FormGroup row>
                                 <Label htmlFor="firstname" md={2}>Firstname</Label>
                                 <Col md={{size:10}}>
-                                <Input type="text" id="firstname" name="firstname" placeholder="Enter your firstname" value={this.state.firstname} onChange={this.handleInputChange}/>
+                                <Input type="text" id="firstname" name="firstname" placeholder="Enter your firstname" value={this.state.firstname}  onChange={this.handleInputChange} onBlur={this.handleBlur('firstname')} valid={errors.firstname === ''} invalid={errors.firstname !== ''}/>
+                                <FormFeedback>{errors.firstname}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label htmlFor="lastname" md={2}>Lastname</Label>
                                 <Col md={{size:10}}>
-                                <Input type="text" id="lastname" name="lastname" placeholder="Enter your lastname" value={this.state.lastname} onChange={this.handleInputChange} />
+                                <Input type="text" id="lastname" name="lastname" placeholder="Enter your lastname" value={this.state.lastname} onChange={this.handleInputChange} onBlur={this.handleBlur('lastname')} valid={errors.lastname === ''} invalid={errors.lastname !== ''} />
+                                <FormFeedback>{errors.lastname}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={{size:10}}>
-                                <Input type="text" id="email" name="email" placeholder="Enter your email id" value={this.state.email} onChange={this.handleInputChange} />
+                                <Input type="text" id="email" name="email" placeholder="Enter your email id" value={this.state.email} onChange={this.handleInputChange} onBlur={this.handleBlur('email')} valid={errors.email === ''} invalid={errors.email !== ''} />
+                                <FormFeedback>{errors.email}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label htmlFor="telno" md={2}>Tel No.</Label>
                                 <Col md={{size:10}}>
-                                <Input type="tel." id="telno" name="telno" placeholder="Enter your Telelphone/ Mobile number" value={this.state.telno} onChange={this.handleInputChange} />
+                                <Input type="tel." id="telno" name="telno" placeholder="Enter your Telelphone/ Mobile number" value={this.state.telno} onChange={this.handleInputChange} onBlur={this.handleBlur('telno')} valid={errors.telno === ''} invalid={errors.telno !== ''}/>
+                                <FormFeedback>{errors.telno}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Col md={{size:6, offset:2}}>
                                 <Label check>
-                                <Input type="checkbox" id="agree" name="agree" checked={this.state.agree} onChange={this.handleInputChange}/> {' '}<strong>Subscribe for coupons and offers notifications!!!</strong>
+                                <Input type="checkbox" id="agree" name="agree" checked={this.state.agree} onChange={this.handleInputChange}/> {' '}<strong>Subscribe for coupon and offer notifications!!!</strong>
                                 </Label>
                                 </Col>
                                 <Col md = {{size:3, offset:1}}>
