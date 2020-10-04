@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Nav, NavbarToggler, Collapse, NavItem, Navbar, NavbarBrand, Jumbotron, Button ,Modal ,ModalBody, ModalHeader, Form, FormGroup, Input, Label} from 'reactstrap';
+import { Nav, NavbarToggler, Collapse, NavItem, Navbar, NavbarBrand, Jumbotron, Button ,Modal ,ModalBody, ModalHeader, Form, FormGroup, Input, Label, Col} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
@@ -84,7 +84,7 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Username</Label>
+                                <Label  htmlFor="username">Username</Label>
                                 <Input type="text" id="username" name="username" innerRef={(input) => this.username = input}/>
                             </FormGroup>
                             <FormGroup>

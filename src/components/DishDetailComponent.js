@@ -1,6 +1,8 @@
-import React from 'react';
-import { Card, CardTitle, CardText, CardImg, CardBody, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, {Component} from 'react';
+import {Card, CardImg, CardBody,CardText, Button, Modal, ModalHeader, ModalBody,
+    Label, Row, Col, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {LocalForm, Errors, Control} from 'react-redux-form';
 
 function RenderDish ({dish}){
 	if (dish!=null)
@@ -31,7 +33,7 @@ function RenderComments({comments}){
 		                      month: "short",
 		                      day: "2-digit"
 		                    }).format(new Date(Date.parse(cm.date)))}
-	                    </p><br/>
+	                    </p>
 					</li>
 				);
 		});
@@ -42,6 +44,7 @@ function RenderComments({comments}){
 				<ul className="list-unstyled">
 					{cnts}
 				</ul>
+				<CommentForm />
 			</div>
 		);
 	}else
@@ -72,6 +75,75 @@ const DishDetail = (props) => {
 	        </div>
         </div>
 );
+}
+
+const minlength = (len) => (val) => val && val.length >= len ;
+
+class CommentForm extends Component{
+	constructor(props){
+		super(props);
+
+		this.state ={
+			isModalOpen: false
+		}
+
+		this.toggleModal = this.toggleModal.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	toggleModal(){
+		this.setState({
+			isModalOpen : !this.state.isModalOpen
+		});
+	}
+
+	handleSubmit(values){
+		this.toggleModal();
+		alert('Current state is:' + JSON.stringify(values));
+	}
+
+	render(){
+		return(
+			<div>
+				<Button outline onClick={this.toggleModal}><span className="fa fa-edit fa-lg"></span>Add Comment</Button>
+				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader>Comments</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        	<Row className="form-group">
+                                <Label md={12} htmlFor="password">Rating</Label>
+                                <Col md={12}>
+                                <Control.select model=".rating" className="form-control" id="rating" name="rating">
+                                	<option>5</option>
+                                	<option>4</option>
+                                	<option>3</option>
+                                	<option>2</option>
+                                	<option>1</option>
+                                </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label md={12} htmlFor="username">Your Name</Label>
+                                <Col md={12}>
+                                <Control.text model=".username" className="form-control" id="username" name="username" placeholder="Your name"
+                                validators ={ {minLength : minlength(3)}}/>
+                                <Errors className="text-danger" model=".username" show="touched" messages= { {minLength: 'Name must contain atleast 3 characters, try adding spaces at the end if your name is shorter than 3 characters'}}/>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label  md={12} htmlFor="comment">Commet</Label>
+                                <Col md={12}>
+                                <Control.textarea row='12' model=".comment" className="form-control" id="comment" name="comment"/>
+                                </Col>
+                            </Row>
+                            <Button type="submit" value="submit" color="primary">Submit</Button>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+			</div>
+
+			);
+	}
 }
 
 export default DishDetail
