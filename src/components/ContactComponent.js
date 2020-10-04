@@ -3,6 +3,18 @@ import {Breadcrumb, BreadcrumbItem, Label, Input, Col, Button, Row} from 'reacts
 import {Link} from 'react-router-dom';
 import {LocalForm, Errors, Control} from 'react-redux-form';
 
+const required = (val) => val && val.length;
+// const minlength = (len) => (val) =>{
+//     if (val.length>=len){
+//         return true;
+//     }
+
+//     return false;
+// }
+const minlength = (len) => (val) => val && (val.length >= len) ;
+const email = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const number = (val) => !isNaN(Number(val));
+
 class ContactUs extends Component{
 
     constructor(props){
@@ -130,25 +142,33 @@ class ContactUs extends Component{
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>Firstname</Label>
                                 <Col md={{size:10}}>
-                                <Control.text model=".firstname" className="form-control" id="firstname" name="firstname" placeholder="Enter your firstname"/>
+                                <Control.text model=".firstname" className="form-control" id="firstname" name="firstname" placeholder="Enter your firstname"
+                                validators ={{required, minLength : minlength(3)}} />
+                                <Errors className="text-danger" model=".firstname" show="touched" messages= {{required: "Required", minLength: " Must be greater than 3 letters try adding space"}} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlFor="lastname" md={2}>Lastname</Label>
                                 <Col md={{size:10}}>
-                                <Control.text model=".lastname" className="form-control" id="lastname" name="lastname" placeholder="Enter your lastname" />
+                                <Control.text model=".lastname" className="form-control" id="lastname" name="lastname" placeholder="Enter your lastname" 
+                                validators ={{required, minLength : minlength(3)}}/>
+                                <Errors className="text-danger" model=".lastname" show="touched" messages= {{required: "Required", minLength: " Must be greater than 3 letters try adding space"}} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={{size:10}}>
-                                <Control.text model=".email" className="form-control" id="email" name="email" placeholder="Enter your email id" />
+                                <Control.text model=".email" className="form-control" id="email" name="email" placeholder="Enter your email id" 
+                                validators ={{required, email}}/>
+                                <Errors className="text-danger" model=".email" show="touched" messages= {{required: "Required", email: " Enter a valid email"}} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlFor="telno" md={2}>Tel No.</Label>
                                 <Col md={{size:10}}>
-                                <Input type="tel." id="telno" name="telno" placeholder="Enter your Telelphone/ Mobile number" />
+                                <Control.text model=".telno" className="form-control" id="telno" name="telno" placeholder="Enter your Telelphone/ Mobile number" 
+                                validators ={{required, number}}/>
+                                <Errors className="text-danger" model=".telno" show="touched" messages= {{required: "Required", number: " Enter a valid number "}} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
