@@ -19,7 +19,7 @@ function RenderDish ({dish}){
 		return(<div></div>);
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, dishId}){
 
 	if(comments!=null){
 		const cnts = comments.map((cm)=> {
@@ -44,7 +44,7 @@ function RenderComments({comments}){
 				<ul className="list-unstyled">
 					{cnts}
 				</ul>
-				<CommentForm />
+				<CommentForm addComment={addComment} dishId={dishId} />
 			</div>
 		);
 	}else
@@ -70,7 +70,7 @@ const DishDetail = (props) => {
 	                <RenderDish dish={props.dish} />
 	            </div>
 	            <div className="col-12 col-md-5 m-1">
-	                <RenderComments comments={props.comments} />
+	                <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
 	            </div>
 	        </div>
         </div>
@@ -78,6 +78,8 @@ const DishDetail = (props) => {
 }
 
 const minlength = (len) => (val) => val && val.length >= len ;
+const maxlength = (len) => (val) => !(val) || (val.length <= len);
+const required = (val) => val && val.length ;
 
 class CommentForm extends Component{
 	constructor(props){
@@ -100,6 +102,7 @@ class CommentForm extends Component{
 	handleSubmit(values){
 		this.toggleModal();
 		alert('Current state is:' + JSON.stringify(values));
+		this.props.addComment(this.props.dishId, values.rating, values.username, values.comment);
 	}
 
 	render(){
@@ -126,8 +129,9 @@ class CommentForm extends Component{
                                 <Label md={12} htmlFor="username">Your Name</Label>
                                 <Col md={12}>
                                 <Control.text model=".username" className="form-control" id="username" name="username" placeholder="Your name"
-                                validators ={ {minLength : minlength(3)}}/>
-                                <Errors className="text-danger" model=".username" show="touched" messages= { {minLength: 'Name must contain atleast 3 characters, try adding spaces at the end if your name is shorter than 3 characters'}}/>
+                                validators ={{ required ,maxLength: maxlength(15), minLength : minlength(3)}}/>
+                                <Errors className="text-danger" model=".username" show="touched" 
+                                messages= { {required:'Required', maxLength:'Name must be less than 15 characters, try giving your nick name or adding initials instead' ,minLength: ' Name must contain atleast 3 characters, try adding spaces at the end if your name is shorter than 3 characters',}}/>
                                 </Col>
                             </Row>
                             <Row className="form-group">
