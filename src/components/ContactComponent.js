@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Breadcrumb, BreadcrumbItem, Label, Input, Col, Button, Row} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {LocalForm, Errors, Control} from 'react-redux-form';
+import {Form, Errors, Control, actions} from 'react-redux-form';
 
 const required = (val) => val && val.length;
 // const minlength = (len) => (val) =>{
@@ -55,41 +55,8 @@ class ContactUs extends Component{
     handleSubmit(values){
         console.log('Current state is:' + JSON.stringify(values));
         alert('Current state is:' + JSON.stringify(values));
+        this.props.resetFeedback();
     }
-
-    // handleBlur = (field)=> (event) =>{
-    //     this.setState({
-    //                 touched: {...this.state.touched, [field]:true}
-    //             });
-    // }
-
-    // validate(firstname, lastname, email, telno){
-    //     const errors = {
-    //         firstname: '',
-    //         lastname: '',
-    //         telno: '',
-    //         email: ''
-    //     }
-
-    //     if (this.state.touched.firstname && firstname.length<3){
-    //         errors.firstname = 'Firstname must be atleast 3 characters; try adding spaces';
-    //     }
-
-    //     if (this.state.touched.lastname && lastname.length<3){
-    //         errors.lastname = 'Lastname must be atleast 3 characters; try adding spaces';
-    //     }
-
-    //     const reg = /^\d+$/;
-    //     if (this.state.touched.telno && !reg.test(telno) && telno.length !== 10){
-    //         errors.telno = 'Phone number must contain only digits and be 10 digits in length';
-    //     }
-
-    //     if (this.state.touched.email && email.split('').filter((x) => x === '@').length !== 1 ){
-    //         errors.email = 'Type in a valid email';
-    //     }
-
-    //     return errors;
-    // }
 
     render(){
 
@@ -138,7 +105,7 @@ class ContactUs extends Component{
                         <h3>Send us your Feedback</h3>
                     </div>
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <Form model ='feedback' onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>Firstname</Label>
                                 <Col md={{size:10}}>
@@ -197,7 +164,7 @@ class ContactUs extends Component{
                                     <Button type="submit" value="submit" color="primary">Send</Button>
                                 </Col>
                             </Row>
-                        </LocalForm> 
+                        </Form> 
                     </div>                   
                 </div>
             </div>
