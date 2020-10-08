@@ -11,7 +11,7 @@ export const Dishes = (state ={
 			return {...state, isLoading:true, errmss: null, dishes:[]}
 		
 		case ActionTypes.DISHES_FAILED :
-			return {...state, isLoading:false, errmss: action.payload, dishes:[]}
+			return {...state, isLoading:false, errmss: action.payload}
 		
 		case ActionTypes.ADD_DISHES :
 			return {...state, isLoading:false, errmss: null, dishes:action.payload}

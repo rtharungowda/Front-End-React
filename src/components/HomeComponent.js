@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle} from 'reactstrap';
 import {Loading} from './LoadingComponent';
+import {baseUrl} from '../shared/baseURL';
 
-function RenderCard({item, isLoading, errmss}){
+function RenderCard({item, isLoading, errmss, logs}){
+	console.log(logs);
 	if (isLoading) {
 		return(
 				<Loading />
@@ -13,16 +15,17 @@ function RenderCard({item, isLoading, errmss}){
 				<h4>{errmss}</h4>
 		);
 	}
-	return(
-		<Card>
-			<CardImg src={item.image} alt={item.name} />
-			<CardBody>
-				<CardTitle>{item.name}</CardTitle>
-				{item.designation ? <CardSubtitle> {item.designation} </CardSubtitle> : null }
-				<CardText>{item.description}</CardText>
-			</CardBody>
-		</Card>
-		);
+	else{
+		return(
+			<Card>
+				<CardImg src={baseUrl+item.image} alt={item.name} />
+				<CardBody>
+					<CardTitle>{item.name}</CardTitle>
+					{item.designation ? <CardSubtitle> {item.designation} </CardSubtitle> : null }
+					<CardText>{item.description}</CardText>
+				</CardBody>
+			</Card>
+			);}
 }
 
 function Home(props){
@@ -32,13 +35,15 @@ function Home(props){
 					<div className="col-12 col-md m-1">
 						<RenderCard item={props.dish} 
 						isLoading={props.dishesLoading}
-						errmss={props.dishesErrMess}/>
+						errmss={props.dishesErrMess}
+						logs='dish'/>
 					</div>
 					<div className="col-12 col-md m-1">
-						<RenderCard item={props.promotion}/>
+						<RenderCard item={props.promotion} isLoading={props.promosLoading} errmss={props.prmoErrmss}
+						logs='promos'/>
 					</div>
 					<div className="col-12 col-md m-1">
-						<RenderCard item={props.leader}/>
+						<RenderCard item={props.leader} logs='promos'/>
 					</div>
 				</div>
 			</div>
