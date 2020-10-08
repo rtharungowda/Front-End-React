@@ -4,13 +4,6 @@ import {Link} from 'react-router-dom';
 import {Form, Errors, Control, actions} from 'react-redux-form';
 
 const required = (val) => val && val.length;
-// const minlength = (len) => (val) =>{
-//     if (val.length>=len){
-//         return true;
-//     }
-
-//     return false;
-// }
 const minlength = (len) => (val) => val && (val.length >= len) ;
 const email = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 const number = (val) => !isNaN(Number(val));
@@ -19,42 +12,13 @@ class ContactUs extends Component{
 
     constructor(props){
         super(props);
-
-        // this.state ={
-        //     firstname: '',
-        //     lastname: '',
-        //     email: '',
-        //     telno: '',
-        //     agree: false,
-        //     contactType: 'Through Email',
-        //     message: '',
-        //     touched: {
-        //         firstname: '',
-        //         lastname: '',
-        //         email: '',
-        //         telno: ''
-        //     }
-        // }
-
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        // this.handleBlur = this.handleBlur.bind(this);
     } 
 
-    // handleInputChange(event){
-    //     const target = event.target;
-    //     const value = target.type === 'checkbox' ? target.checked : target.value;
-    //     const name = target.name;
-
-    //     this.setState({
-    //         [name] : value
-    //     });
-
-    // }
-
     handleSubmit(values){
+        this.props.postFeedback(values);
         console.log('Current state is:' + JSON.stringify(values));
-        alert('Current state is:' + JSON.stringify(values));
+        alert(JSON.stringify(values));
         this.props.resetFeedback();
     }
 

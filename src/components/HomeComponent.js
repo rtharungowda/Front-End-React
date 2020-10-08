@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle} from 'reactstrap';
 import {Loading} from './LoadingComponent';
 import {baseUrl} from '../shared/baseURL';
+import {FadeTransform} from 'react-animation-components';
 
 function RenderCard({item, isLoading, errmss, logs}){
-	console.log(logs);
 	if (isLoading) {
 		return(
 				<Loading />
@@ -16,7 +16,9 @@ function RenderCard({item, isLoading, errmss, logs}){
 		);
 	}
 	else{
+		console.log(logs);
 		return(
+			<FadeTransform in transformProps = {{exitTransform: 'scale(0.5) translateY(-50%)'}}>
 			<Card>
 				<CardImg src={baseUrl+item.image} alt={item.name} />
 				<CardBody>
@@ -25,7 +27,9 @@ function RenderCard({item, isLoading, errmss, logs}){
 					<CardText>{item.description}</CardText>
 				</CardBody>
 			</Card>
-			);}
+			</FadeTransform>
+			);
+	}
 }
 
 function Home(props){
@@ -35,15 +39,20 @@ function Home(props){
 					<div className="col-12 col-md m-1">
 						<RenderCard item={props.dish} 
 						isLoading={props.dishesLoading}
-						errmss={props.dishesErrMess}
-						logs='dish'/>
+						errmss={props.dishesErrMss} logs="dish"
+						/>
 					</div>
 					<div className="col-12 col-md m-1">
-						<RenderCard item={props.promotion} isLoading={props.promosLoading} errmss={props.prmoErrmss}
-						logs='promos'/>
+						<RenderCard item={props.promotion} 
+						isLoading={props.promosLoading} 
+						errmss={props.prmoErrmss} logs="promo"
+						/>
 					</div>
 					<div className="col-12 col-md m-1">
-						<RenderCard item={props.leader} logs='promos'/>
+						<RenderCard item={props.leader} 
+						isLoading={props.leaderLoading} 
+						errmss={props.leaderErrMss} logs="leader"
+						/>
 					</div>
 				</div>
 			</div>
